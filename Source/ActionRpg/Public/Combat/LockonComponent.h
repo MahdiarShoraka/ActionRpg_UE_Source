@@ -6,6 +6,12 @@
 #include "Components/ActorComponent.h"
 #include "LockonComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnUpdatedTargetSignature,
+	ULockonComponent,
+	OnUpdatedTargetDelegate,
+	AActor*, NewTargetActorRef
+	);
 
 class USpringArmComponent;
 class UCharacterMovementComponent;

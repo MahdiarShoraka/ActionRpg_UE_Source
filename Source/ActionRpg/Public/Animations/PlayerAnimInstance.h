@@ -21,9 +21,14 @@ protected:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float CurrentVelocity{ 0.0f }; // Direct initialization (only works with newly created variables)
+	float CurrentVelocity{ 0.0f }; // Direct initialization
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateVelocity();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsInCombat = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float CurrentDirection =  0.0f;
 };
