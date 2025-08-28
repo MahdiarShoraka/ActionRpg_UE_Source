@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "TraceComponent.generated.h"
 
+class USkeletalMeshComponent;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONRPG_API UTraceComponent : public UActorComponent
@@ -13,16 +14,28 @@ class ACTIONRPG_API UTraceComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UTraceComponent();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+protected:
+	virtual void BeginPlay() override;
+
+private:
+	USkeletalMeshComponent* SkeletalComp;
+
+	UPROPERTY(EditAnywhere)
+	FName Start;
+
+	UPROPERTY(EditAnywhere)
+	FName End;
+
+	UPROPERTY(EditAnywhere)
+	FName Rotation;
+
+	UPROPERTY(EditAnywhere)
+	double BoxCollisionLength = 30.0;
+
+	UPROPERTY(EditAnywhere)
+	bool bDebugMode = false;
 };
