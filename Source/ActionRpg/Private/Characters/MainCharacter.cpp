@@ -2,6 +2,7 @@
 
 
 #include "Characters/MainCharacter.h"
+#include "Animations/PlayerAnimInstance.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -12,7 +13,8 @@ AMainCharacter::AMainCharacter()
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	PlayerAnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());	// Cast for UE pointers, static_cast for primitive types
 }
 
 void AMainCharacter::Tick(float DeltaTime)

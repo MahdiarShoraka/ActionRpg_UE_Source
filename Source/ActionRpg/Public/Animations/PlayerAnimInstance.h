@@ -15,20 +15,24 @@ class ACTIONRPG_API UPlayerAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 
 protected:
-
 	// Copy initialization
 	// float CurrentVelocity = 0.0f;
-
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float CurrentVelocity{ 0.0f }; // Direct initialization
+	float CurrentSpeed{ 0.0f }; // Direct initialization
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateVelocity();
+	void UpdateSpeed();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsInCombat = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CurrentDirection =  0.0f;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void HandleUpdatedTarget(AActor* NewTargetActorRef);
+
+	UFUNCTION(BlueprintCallable)
+	void UpdateDirection();
 };

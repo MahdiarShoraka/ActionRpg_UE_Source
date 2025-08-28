@@ -7,6 +7,8 @@
 #include "Interfaces/MainPlayer.h"
 #include "MainCharacter.generated.h"
 
+class UPlayerAnimInstance;
+
 UCLASS()
 class ACTIONRPG_API AMainCharacter : public ACharacter, public IMainPlayer
 {
@@ -18,6 +20,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(BlueprintReadOnly)
+	UPlayerAnimInstance* PlayerAnimInstance;
+	
 public:	
 	virtual void Tick(float DeltaTime) override;
 	

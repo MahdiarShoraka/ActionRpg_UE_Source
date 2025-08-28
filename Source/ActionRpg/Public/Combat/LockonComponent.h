@@ -32,6 +32,9 @@ public:
 	ULockonComponent();
 	
 	AActor* CurrentTargetActor;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnUpdatedTargetSignature OnUpdatedTargetDelegate;
 protected:
 	virtual void BeginPlay() override;
 
