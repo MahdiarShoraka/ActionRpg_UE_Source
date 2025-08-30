@@ -18,6 +18,12 @@ public:
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable)
+	void HandleResetAttack();
+
+	UPROPERTY(VisibleAnywhere)
+	bool bIsAttacking = false;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -38,4 +44,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	bool bDebugMode = false;
+
+	TArray<AActor*> TargetsToIgnore;
 };

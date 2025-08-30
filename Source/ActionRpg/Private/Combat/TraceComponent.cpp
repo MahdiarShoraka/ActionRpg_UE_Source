@@ -5,6 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Interfaces/Fighter.h"
+#include "Engine/DamageEvents.h"
 
 UTraceComponent::UTraceComponent()
 {
@@ -26,6 +27,8 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if (!bIsAttacking) return;
+	
 	FVector StartSocketLocation = SkeletalComp->GetSocketLocation(Start);
 	FVector EndSocketLocation = SkeletalComp->GetSocketLocation(End);
 	FQuat ShapeRotation = SkeletalComp->GetSocketQuaternion(Rotation);
@@ -74,7 +77,32 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	if (FighterRef)
 	{
 		CharacterDamage = FighterRef->GetDamage();
-		UE_LOG(LogTemp, Warning, TEXT("Damage: %f"), CharacterDamage);
 	}
+
+	FDamageEvent TargetAttackedEvent;
+	
+	// iterate by const reference
+	for (const FHitResult& Hit : OutResults)
+	{
+		AActor* TargetActor = Hit.GetActor();
+
+		// prevents from hitting the same target multiple times in one attack
+		if (TargetsToIgnore.Contains(TargetActor)) continue;
+		
+		TargetActor->TakeDamage(
+			CharacterDamage,
+			TargetAttackedEvent,
+			GetOwner()->GetInstigatorController(),
+			GetOwner()
+			);
+		
+		TargetsToIgnore.AddUnique(TargetActor);
+		
+	}
+}
+
+void UTraceComponent::HandleResetAttack()
+{
+	TargetsToIgnore.Empty();
 }
 

@@ -65,6 +65,7 @@ void ULockonComponent::StartLockon(float Radius)
 
 	IEnemy::Execute_OnSelect(CurrentTargetActor);
 
+	// Note: Broadcast is received on BP_ThirdPerson, then HandleUpdatedTarget from PlayerAnimInstance gets called
 	OnUpdatedTargetDelegate.Broadcast(CurrentTargetActor);
 }
 
@@ -83,6 +84,7 @@ void ULockonComponent::EndLockon()
 
 	Controller->ResetIgnoreLookInput();
 
+	// Note: Broadcast is received on BP_ThirdPerson, then HandleUpdatedTarget from PlayerAnimInstance gets called
 	OnUpdatedTargetDelegate.Broadcast(CurrentTargetActor);
 }
 
