@@ -9,6 +9,12 @@
 #include "MainCharacter.generated.h"
 
 class UPlayerAnimInstance;
+class ULockonComponent;
+class UStatsComponent;
+class UCombatComponent;
+class UTraceComponent;
+class UBlockComponent;
+class UPlayerActionsComponent;
 
 UCLASS()
 class ACTIONRPG_API AMainCharacter : public ACharacter, public IMainPlayer, public IFighter
@@ -18,16 +24,34 @@ class ACTIONRPG_API AMainCharacter : public ACharacter, public IMainPlayer, publ
 public:
 	AMainCharacter();
 
+	virtual void Tick(float DeltaTime) override;
+	
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual float GetDamage() override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UStatsComponent* StatsComp;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	ULockonComponent* LockonComp;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UCombatComponent* CombatComp;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UTraceComponent* TraceComp;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UBlockComponent* BlockComp;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPlayerActionsComponent* PlayerActionsComp;
+	
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadOnly)
 	UPlayerAnimInstance* PlayerAnimInstance;
 	
-public:	
-	virtual void Tick(float DeltaTime) override;
-	
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	virtual float GetDamage() override; 
 };
