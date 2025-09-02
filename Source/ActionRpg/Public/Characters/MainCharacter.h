@@ -30,6 +30,8 @@ public:
 
 	virtual float GetDamage() override;
 
+	virtual bool HasEnoughStamina(float Cost) override;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStatsComponent* StatsComp;
 

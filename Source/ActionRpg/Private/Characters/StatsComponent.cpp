@@ -2,7 +2,7 @@
 
 
 #include "Characters/StatsComponent.h"
-
+#include "Kismet/KismetMathLibrary.h"
 
 UStatsComponent::UStatsComponent()
 {
@@ -11,10 +11,29 @@ UStatsComponent::UStatsComponent()
 }
 
 
+void UStatsComponent::ReduceHealth(float Damage)
+{
+	if (Stats[EStat::Health] <= 0) return;
+
+	Stats[EStat::Health] -= Damage;
+	Stats[EStat::Health] = UKismetMathLibrary::FClamp(
+		Stats[EStat::Health],
+		0,
+		Stats[EStat::MaxHealth]);
+}
+
+void UStatsComponent::ReduceStamina(float Cost)
+{
+	Stats[EStat::Stamina] -= Cost;
+	Stats[EStat::Stamina] = UKismetMathLibrary::FClamp(
+		Stats[EStat::Stamina],
+		0,
+		Stats[EStat::MaxStamina]);
+}
+
 void UStatsComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
 	
 }
 

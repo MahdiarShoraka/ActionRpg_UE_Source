@@ -76,7 +76,7 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 	if (FighterRef)
 	{
-		CharacterDamage = FighterRef->GetDamage();
+		CharacterDamage = FighterRef->GetDamage();	// Based on Strength stat
 	}
 
 	FDamageEvent TargetAttackedEvent;
@@ -88,7 +88,8 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 		// prevents from hitting the same target multiple times in one attack
 		if (TargetsToIgnore.Contains(TargetActor)) continue;
-		
+
+		// Built-in UE func in Actor
 		TargetActor->TakeDamage(
 			CharacterDamage,
 			TargetAttackedEvent,

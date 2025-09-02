@@ -19,8 +19,13 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditAnywhere)
-	// Key : Enum of type EStat, Value: float
-	TMap<TEnumAsByte<EStat>, float> Stats;
+	TMap<TEnumAsByte<EStat>, float> Stats;	// Key : Enum of type EStat, Value: float
+
+	UFUNCTION(BlueprintCallable)
+	void ReduceHealth(float Damage);
+
+	UFUNCTION(BlueprintCallable)
+	void ReduceStamina(float Cost);
 	
 protected:
 	virtual void BeginPlay() override;

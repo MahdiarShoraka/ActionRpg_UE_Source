@@ -63,6 +63,7 @@ void ULockonComponent::StartLockon(float Radius)
 
 	SpringArmComp->TargetOffset = FVector(0, 0, 100);
 
+	// Current Target Actor is calling OnSelect
 	IEnemy::Execute_OnSelect(CurrentTargetActor);
 
 	// Note: Broadcast is received on BP_ThirdPerson, then HandleUpdatedTarget from PlayerAnimInstance gets called

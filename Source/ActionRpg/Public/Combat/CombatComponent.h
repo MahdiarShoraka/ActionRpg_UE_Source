@@ -6,6 +6,13 @@
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnAttackPerformedSignature,	// Event name (standard practice to prefix with FOn and postfix with Signature)
+	UCombatComponent,	//	class that holds the event
+	OnAttackPerformedDelegate,	// event name for when the event info stored in the same class (standard practice to start with On and end with Delegate)
+	float, Amount	// passed in arg type, passed in arg name
+	);
+
 class UAnimMontage;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -23,6 +30,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleResetAttack();
+
+	// All events should be in public
+	UPROPERTY(BlueprintAssignable)
+	FOnAttackPerformedSignature OnAttackPerformedDelegate;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -38,4 +49,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	bool bCanAttack = true;
+
+	UPROPERTY(EditAnywhere)
+	float StaminaCost = 5.0f;
 };

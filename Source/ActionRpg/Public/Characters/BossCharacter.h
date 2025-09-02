@@ -7,6 +7,8 @@
 #include "Interfaces/Enemy.h"
 #include "BossCharacter.generated.h"
 
+class UStatsComponent;
+
 UCLASS()
 class ACTIONRPG_API ABossCharacter : public ACharacter, public IEnemy
 {
@@ -15,12 +17,14 @@ class ACTIONRPG_API ABossCharacter : public ACharacter, public IEnemy
 public:
 	ABossCharacter();
 
-protected:
-	virtual void BeginPlay() override;
-
-public:	
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UStatsComponent* StatsComp;
+
+protected:
+	virtual void BeginPlay() override;
 
 };

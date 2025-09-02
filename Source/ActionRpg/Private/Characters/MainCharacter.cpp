@@ -46,6 +46,12 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 float AMainCharacter::GetDamage()
 {
+	// Damage the other actors recieve = Strength
 	return StatsComp->Stats[EStat::Strength];
+}
+
+bool AMainCharacter::HasEnoughStamina(float Cost)
+{
+	return StatsComp->Stats[EStat::Stamina] >= Cost;
 }
 
