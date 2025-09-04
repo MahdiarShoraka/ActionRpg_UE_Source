@@ -4,6 +4,7 @@
 #include "Combat/CombatComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Interfaces/MainPlayer.h"
 
 UCombatComponent::UCombatComponent()
 {
@@ -22,6 +23,14 @@ void UCombatComponent::BeginPlay()
 
 void UCombatComponent::ComboAttack()
 {
+	// Note:In interfaces, U class is used for validation, I class is used for functions inside the interface
+	if (Owner->Implements<UMainPlayer>())
+	{
+		IMainPlayer* IPlayerRef = Cast<IMainPlayer>(Owner);
+
+		if (IPlayerRef && !IPlayerRef->HasEnoughStamina(StaminaCost)) return;
+	}
+	
 	if (!bCanAttack) return;
 	bCanAttack = false;
 	
