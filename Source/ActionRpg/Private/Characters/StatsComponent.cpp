@@ -3,6 +3,7 @@
 
 #include "Characters/StatsComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include  "Kismet/KismetSystemLibrary.h"
 
 UStatsComponent::UStatsComponent()
 {
@@ -29,6 +30,28 @@ void UStatsComponent::ReduceStamina(float Cost)
 		Stats[EStat::Stamina],
 		0,
 		Stats[EStat::MaxStamina]);
+
+	bCanRegen = false;
+
+	FLatentActionInfo FunctionInfo(0, 100, TEXT("EnableRegen"), this);
+	UKismetSystemLibrary::RetriggerableDelay(GetWorld(), StaminaDelayDuration, FunctionInfo);
+}
+
+void UStatsComponent::RegenStamina()
+{
+	if (!bCanRegen) return;
+	
+	// use interpolation to avoid instant full regeneration
+	Stats[EStat::Stamina] = UKismetMathLibrary::FInterpTo_Constant(
+		Stats[EStat::Stamina],
+		Stats[EStat::MaxStamina],
+		GetWorld()->DeltaTimeSeconds,
+		StaminaRegenRate);
+}
+
+void UStatsComponent::EnableRegen()
+{
+	bCanRegen = true;
 }
 
 void UStatsComponent::BeginPlay()

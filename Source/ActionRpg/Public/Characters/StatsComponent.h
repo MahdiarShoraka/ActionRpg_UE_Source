@@ -26,8 +26,24 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ReduceStamina(float Cost);
+
+	UFUNCTION(BlueprintCallable)
+	void RegenStamina();
+
+	UFUNCTION()
+	void EnableRegen();
 	
 protected:
 	virtual void BeginPlay() override;
+
+private:
+	UPROPERTY(EditAnywhere)
+	double StaminaRegenRate = 10.0;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bCanRegen = true;
+
+	UPROPERTY(EditAnywhere)
+	float StaminaDelayDuration = 2.0f;
 	
 };

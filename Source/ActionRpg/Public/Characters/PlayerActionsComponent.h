@@ -6,6 +6,11 @@
 #include "Components/ActorComponent.h"
 #include "PlayerActionsComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnSprintSignature,
+	UPlayerActionsComponent,
+	OnSprintDelegate,
+	float, Cost);
 
 class UCharacterMovementComponent;
 class IMainPlayer;
@@ -25,6 +30,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Walk();
+
+	UPROPERTY(BlueprintAssignable)
+	FOnSprintSignature OnSprintDelegate;
 	
 protected:
 	virtual void BeginPlay() override;
