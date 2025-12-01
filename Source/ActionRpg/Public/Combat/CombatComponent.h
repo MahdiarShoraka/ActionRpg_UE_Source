@@ -10,7 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
 	FOnAttackPerformedSignature,	// Event name (standard practice to prefix with FOn and postfix with Signature)
 	UCombatComponent,	//	class that holds the event
 	OnAttackPerformedDelegate,	// event name for when the event info is stored in the same class (standard practice to start with On and end with Delegate)
-	float, Amount	// passed in arg type, passed in arg name
+	float, Amount	// passed-in arg type, passed-in arg name
 	);
 
 class UAnimMontage;

@@ -2,6 +2,7 @@
 
 
 #include "Combat/EnemyProjectileComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UEnemyProjectileComponent::UEnemyProjectileComponent()
 {
@@ -23,7 +24,12 @@ void UEnemyProjectileComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 void UEnemyProjectileComponent::SpawnProjectile(FName ComponentName, TSubclassOf<AActor> ProjectileClass)
 {
 	USceneComponent* SpawnPointComp = Cast<USceneComponent>(GetOwner()->GetDefaultSubobjectByName(ComponentName));
+	
 	FVector SpawnLocation = SpawnPointComp->GetComponentLocation();
-	GetWorld()->SpawnActor(ProjectileClass, &SpawnLocation);
+	FVector PlayerLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	
+	FRotator SpawnRotation = UKismetMathLibrary::FindLookAtRotation(SpawnLocation, PlayerLocation);
+	
+	GetWorld()->SpawnActor(ProjectileClass, &SpawnLocation, &SpawnRotation);
 }
 
