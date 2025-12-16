@@ -4,10 +4,13 @@
 #include "Characters/AI/BTT_RangeAttack.h"
 #include "AIController.h"
 #include "GameFramework/Character.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Characters/EEnemyState.h"
+
 
 EBTNodeResult::Type UBTT_RangeAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	//Super::ExecuteTask(OwnerComp, NodeMemory);
 	ACharacter* CharacterRef = OwnerComp.GetAIOwner()->GetPawn<ACharacter>();
 	if (!IsValid(CharacterRef))
 	{
@@ -15,6 +18,20 @@ EBTNodeResult::Type UBTT_RangeAttack::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	}
 
 	CharacterRef->PlayAnimMontage(AnimMontage);
+	
+	double RandValue = UKismetMathLibrary::RandomFloat();
+	
+	if (RandValue > Threshold)
+	{
+		Threshold = 0.9;
+		OwnerComp.GetBlackboardComponent()->SetValueAsEnum(
+			TEXT("CurrentState"), 
+			EEnemyState::Charge);
+	}
+	else
+	{
+		Threshold -= 0.1;
+	}
 	
 	return EBTNodeResult::Succeeded;
 }

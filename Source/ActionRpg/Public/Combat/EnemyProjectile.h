@@ -14,6 +14,9 @@ class ACTIONRPG_API AEnemyProjectile : public AActor
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* HitTemplate;
 	
+	UPROPERTY(EditAnywhere)
+	float Damage = 10.f;
+	
 public:	
 	AEnemyProjectile();
 	
@@ -21,6 +24,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void HandleBeginOverlap(AActor* OtherActor);
+	
+	UFUNCTION()	// Necessary for FTimerManager to work
+	void DestroyProjectile();
 
 protected:
 	virtual void BeginPlay() override;
