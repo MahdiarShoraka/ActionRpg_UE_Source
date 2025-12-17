@@ -7,6 +7,8 @@
 #include "GameFramework/Character.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
 
 void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
@@ -16,11 +18,20 @@ void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("IsReadyToCharge"), false);
 		ChargeAtPlayer();
 	}
+	
+	if (!bIsFinished) return;
+	
+	ControllerRef->ReceiveMoveCompleted.Remove(MoveCompletedDelegate);
+	
+	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 }
 
 UBTT_ChargeAttack::UBTT_ChargeAttack()
 {
 	bNotifyTick = true;
+	MoveCompletedDelegate.BindUFunction(
+		this,
+		"HandleMoveCompleted");
 }
 
 EBTNodeResult::Type UBTT_ChargeAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -33,6 +44,8 @@ EBTNodeResult::Type UBTT_ChargeAttack::ExecuteTask(UBehaviorTreeComponent& Owner
 	
 	// IsReadyToCharge gives the signal on when the character should start moving
 	OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("IsReadyToCharge"), false);
+	
+	bIsFinished = false;
 	
 	return EBTNodeResult::InProgress;
 }
@@ -48,4 +61,30 @@ void UBTT_ChargeAttack::ChargeAtPlayer()
 	
 	ControllerRef->MoveTo(MoveRequest);
 	ControllerRef->SetFocus(PlayerRef);
+	
+	ControllerRef->ReceiveMoveCompleted.AddUnique(MoveCompletedDelegate);
+	
+	OriginalWalkSpeed = CharacterRef->GetCharacterMovement()->MaxWalkSpeed;
+	
+	CharacterRef->GetCharacterMovement()->MaxWalkSpeed = ChargeWalkSpeed;
+}
+
+void UBTT_ChargeAttack::HandleMoveCompleted()
+{
+	BossAnim->bIsCharging = false;
+	
+	FTimerHandle AttackTimerHandle;
+	CharacterRef->GetWorldTimerManager().SetTimer(
+		AttackTimerHandle, 
+		this, 
+		&UBTT_ChargeAttack::FinishAttackTask, 
+		1.0f, 
+		false);
+	
+	CharacterRef->GetCharacterMovement()->MaxWalkSpeed = OriginalWalkSpeed;
+}
+
+void UBTT_ChargeAttack::FinishAttackTask()
+{
+	bIsFinished = true;
 }

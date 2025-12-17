@@ -23,6 +23,15 @@ class ACTIONRPG_API UBTT_ChargeAttack : public UBTTaskNode
 	UPROPERTY(EditAnywhere)
 	float AcceptableRadius = 100.f;
 	
+	FScriptDelegate MoveCompletedDelegate;
+	
+	float OriginalWalkSpeed;
+	
+	UPROPERTY(EditAnywhere)
+	float ChargeWalkSpeed = 2000.f;
+	
+	bool bIsFinished = false;
+	
 protected:
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 	
@@ -32,4 +41,9 @@ public:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 	void ChargeAtPlayer();
+	
+	UFUNCTION()
+	void HandleMoveCompleted();
+	
+	void FinishAttackTask();
 };
