@@ -6,6 +6,7 @@
 #include "Animations/BossAnimInstance.h"
 #include "GameFramework/Character.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Characters/EEnemyState.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -21,6 +22,8 @@ void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	
 	if (!bIsFinished) return;
 	
+	OwnerComp.GetBlackboardComponent()->SetValueAsEnum(TEXT("CurrentState"), EEnemyState::Melee);
+	
 	ControllerRef->ReceiveMoveCompleted.Remove(MoveCompletedDelegate);
 	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
@@ -29,9 +32,7 @@ void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 UBTT_ChargeAttack::UBTT_ChargeAttack()
 {
 	bNotifyTick = true;
-	MoveCompletedDelegate.BindUFunction(
-		this,
-		"HandleMoveCompleted");
+	MoveCompletedDelegate.BindUFunction(this,"HandleMoveCompleted");
 }
 
 EBTNodeResult::Type UBTT_ChargeAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -59,10 +60,10 @@ void UBTT_ChargeAttack::ChargeAtPlayer()
 	MoveRequest.SetUsePathfinding(true);
 	MoveRequest.SetAcceptanceRadius(AcceptableRadius);
 	
+	ControllerRef->ReceiveMoveCompleted.AddUnique(MoveCompletedDelegate);
+	
 	ControllerRef->MoveTo(MoveRequest);
 	ControllerRef->SetFocus(PlayerRef);
-	
-	ControllerRef->ReceiveMoveCompleted.AddUnique(MoveCompletedDelegate);
 	
 	OriginalWalkSpeed = CharacterRef->GetCharacterMovement()->MaxWalkSpeed;
 	

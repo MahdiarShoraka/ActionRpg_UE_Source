@@ -12,8 +12,13 @@ UCombatComponent::UCombatComponent()
 
 }
 
+void UCombatComponent::RandomAttack()
+{
+	int RandomIndex = FMath::RandRange(0, AttackAnimations.Num() - 1);
+	
+	AnimDuration = Owner->PlayAnimMontage(AttackAnimations[RandomIndex]);
+}
 
-// Called when the game starts
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -53,7 +58,6 @@ void UCombatComponent::HandleResetAttack()
 {
 	bCanAttack = true;
 }
-
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

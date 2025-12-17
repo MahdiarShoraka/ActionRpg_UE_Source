@@ -22,4 +22,7 @@ private:
 	UAnimMontage* AnimMontage;
 	
 	double Threshold = 0.9;
+	
+	UPROPERTY(EditAnywhere)
+	float MeleeRange = 1250.f;
 };

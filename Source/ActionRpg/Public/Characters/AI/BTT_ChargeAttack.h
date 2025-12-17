@@ -21,7 +21,7 @@ class ACTIONRPG_API UBTT_ChargeAttack : public UBTTaskNode
 	class UBossAnimInstance* BossAnim;
 	
 	UPROPERTY(EditAnywhere)
-	float AcceptableRadius = 100.f;
+	float AcceptableRadius = 150.f;
 	
 	FScriptDelegate MoveCompletedDelegate;
 	
@@ -45,5 +45,6 @@ public:
 	UFUNCTION()
 	void HandleMoveCompleted();
 	
+	UFUNCTION()
 	void FinishAttackTask();
 };

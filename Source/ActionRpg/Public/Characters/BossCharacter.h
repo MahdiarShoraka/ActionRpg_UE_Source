@@ -6,13 +6,14 @@
 #include "GameFramework/Character.h"
 #include "Interfaces/Enemy.h"
 #include "Characters/EEnemyState.h"
+#include "Interfaces/Fighter.h"
 #include "BossCharacter.generated.h"
 
 class UStatsComponent;
 class UBlackboardComponent;
 
 UCLASS()
-class ACTIONRPG_API ABossCharacter : public ACharacter, public IEnemy
+class ACTIONRPG_API ABossCharacter : public ACharacter, public IEnemy, public IFighter
 {
 	GENERATED_BODY()
 
@@ -23,11 +24,20 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UStatsComponent* StatsComp;
-
 	UFUNCTION(BlueprintCallable)
 	void DetectPawn(APawn* DetectedPawn, APawn* PawnToDetect);
+	
+	virtual float GetDamage() override;
+	
+	virtual void Attack() override;
+	
+	virtual float GetAnimDuration() override;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UStatsComponent* StatsComp;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UCombatComponent* CombatComp;
 
 protected:
 	virtual void BeginPlay() override;
