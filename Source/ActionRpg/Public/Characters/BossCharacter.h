@@ -40,6 +40,12 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UCombatComponent* CombatComp;
+	
+	UFUNCTION()
+	void HandlePlayerDeath();
+	
+	UFUNCTION(BlueprintCallable)
+	void HandleDeath();
 
 protected:
 	virtual void BeginPlay() override;
@@ -49,5 +55,9 @@ private:
 	TEnumAsByte<EEnemyState> InitialState;
 
 	UBlackboardComponent* BlackBoardComp;
-
+	
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* DeathAnim;
+	
+	class AAIController* ControllerRef;
 };

@@ -25,6 +25,12 @@ AMainCharacter::AMainCharacter()
 	
 }
 
+void AMainCharacter::HandleDeath()
+{
+	PlayAnimMontage(DeathAnimMontage);
+	DisableInput(GetController<APlayerController>());
+}
+
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();

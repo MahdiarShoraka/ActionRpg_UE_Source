@@ -20,6 +20,9 @@ UCLASS()
 class ACTIONRPG_API AMainCharacter : public ACharacter, public IMainPlayer, public IFighter
 {
 	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* DeathAnimMontage;
 
 public:
 	AMainCharacter();
@@ -49,6 +52,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UPlayerActionsComponent* PlayerActionsComp;
+	
+	UFUNCTION(BlueprintCallable)
+	void HandleDeath();
 	
 protected:
 	virtual void BeginPlay() override;
