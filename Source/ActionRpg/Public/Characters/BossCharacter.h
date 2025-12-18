@@ -33,6 +33,8 @@ public:
 	
 	virtual float GetAnimDuration() override;
 	
+	virtual float GetMeleeRange() override;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStatsComponent* StatsComp;
 	

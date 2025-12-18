@@ -15,6 +15,8 @@ class ACTIONRPG_API UBTT_RangeAttack : public UBTTaskNode
 	GENERATED_BODY()
 
 public:
+	UBTT_RangeAttack();
+	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 private:
@@ -22,7 +24,4 @@ private:
 	UAnimMontage* AnimMontage;
 	
 	double Threshold = 0.9;
-	
-	UPROPERTY(EditAnywhere)
-	float MeleeRange = 1250.f;
 };

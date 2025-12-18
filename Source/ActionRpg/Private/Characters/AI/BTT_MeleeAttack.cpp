@@ -7,9 +7,11 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "Interfaces/Fighter.h"
 #include "GameFramework/Character.h"
+#include "Characters/EEnemyState.h"
 
 UBTT_MeleeAttack::UBTT_MeleeAttack()
 {
+	bCreateNodeInstance = true;
 	bNotifyTick = true;
 	MoveDelegate.BindUFunction(this, "FinishAttackTask");
 }
@@ -41,7 +43,12 @@ EBTNodeResult::Type UBTT_MeleeAttack::ExecuteTask(UBehaviorTreeComponent& OwnerC
 		FighterRef->Attack();
 		
 		FTimerHandle AttackTimerHandle;
-		AIRef->GetCharacter()->GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &UBTT_MeleeAttack::FinishAttackTask, FighterRef->GetAnimDuration(), false);
+		AIRef->GetCharacter()->GetWorldTimerManager().SetTimer(
+			AttackTimerHandle, 
+			this, 
+			&UBTT_MeleeAttack::FinishAttackTask, 
+			FighterRef->GetAnimDuration(), 
+			false);
 	}
 	
 	return EBTNodeResult::InProgress;
@@ -54,9 +61,25 @@ void UBTT_MeleeAttack::FinishAttackTask()
 
 void UBTT_MeleeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
+	float Distance = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(TEXT("Distance"));
+	
+	AAIController* AIRef = OwnerComp.GetAIOwner();
+	
+	IFighter* FighterRef = Cast<IFighter>(AIRef->GetCharacter());
+	
+	if (Distance > FighterRef->GetMeleeRange())
+	{
+		OwnerComp.GetBlackboardComponent()->SetValueAsEnum(TEXT("CurrentState"), EEnemyState::Range);
+		AbortTask(OwnerComp, NodeMemory);
+		FinishLatentTask(OwnerComp, EBTNodeResult::Aborted);
+		AIRef->StopMovement();
+		AIRef->ClearFocus(EAIFocusPriority::Gameplay);
+		AIRef->ReceiveMoveCompleted.Remove(MoveDelegate);
+	}
+	
 	if (!bIsFinished) return;
 	
-	OwnerComp.GetAIOwner()->ReceiveMoveCompleted.Remove(MoveDelegate);
+	AIRef->ReceiveMoveCompleted.Remove(MoveDelegate);
 	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 }

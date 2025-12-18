@@ -31,6 +31,7 @@ void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 UBTT_ChargeAttack::UBTT_ChargeAttack()
 {
+	bCreateNodeInstance = true;
 	bNotifyTick = true;
 	MoveCompletedDelegate.BindUFunction(this,"HandleMoveCompleted");
 }

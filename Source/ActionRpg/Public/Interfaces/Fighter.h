@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Characters/EStat.h"
 #include "UObject/Interface.h"
 #include "Fighter.generated.h"
 
@@ -27,4 +28,6 @@ public:
 	virtual void Attack() {}
 	
 	virtual float GetAnimDuration() {return 0.0f;}
+	
+	virtual float GetMeleeRange() { return 0.0f; }
 };
