@@ -21,6 +21,13 @@ void UStatsComponent::ReduceHealth(float Damage)
 		Stats[EStat::Health],
 		0,
 		Stats[EStat::MaxHealth]);
+	
+	OnHealthPercentUpdateDelegate.Broadcast(GetStatPercentage(EStat::Health, EStat::MaxHealth));
+	
+	if (Stats[EStat::Health] == 0)
+	{
+		OnZeroHealthDelegate.Broadcast();
+	}
 }
 
 void UStatsComponent::ReduceStamina(float Cost)
@@ -30,11 +37,13 @@ void UStatsComponent::ReduceStamina(float Cost)
 		Stats[EStat::Stamina],
 		0,
 		Stats[EStat::MaxStamina]);
-
+	
 	bCanRegen = false;
 
 	FLatentActionInfo FunctionInfo(0, 100, TEXT("EnableRegen"), this);
 	UKismetSystemLibrary::RetriggerableDelay(GetWorld(), StaminaDelayDuration, FunctionInfo);
+	
+	OnStaminaPercentUpdateDelegate.Broadcast(GetStatPercentage(EStat::Stamina, EStat::MaxStamina));
 }
 
 void UStatsComponent::RegenStamina()
@@ -47,11 +56,18 @@ void UStatsComponent::RegenStamina()
 		Stats[EStat::MaxStamina],
 		GetWorld()->DeltaTimeSeconds,
 		StaminaRegenRate);
+	
+	OnStaminaPercentUpdateDelegate.Broadcast(GetStatPercentage(EStat::Stamina, EStat::MaxStamina));
 }
 
 void UStatsComponent::EnableRegen()
 {
 	bCanRegen = true;
+}
+
+float UStatsComponent::GetStatPercentage(EStat Current, EStat Max)
+{
+	return Stats[Current] / Stats[Max];
 }
 
 void UStatsComponent::BeginPlay()
