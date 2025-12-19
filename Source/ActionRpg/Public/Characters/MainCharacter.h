@@ -23,6 +23,9 @@ class ACTIONRPG_API AMainCharacter : public ACharacter, public IMainPlayer, publ
 	
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* DeathAnimMontage;
+	
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* HurtAnimMontage;
 
 public:
 	AMainCharacter();
@@ -34,6 +37,13 @@ public:
 	virtual float GetDamage() override;
 
 	virtual bool HasEnoughStamina(float Cost) override;
+	
+	virtual void EndLockonWithActor(AActor* ActorRef) override;
+	
+	virtual bool CanTakeDamage(AActor* Opponent) override;
+	
+	UFUNCTION(BlueprintCallable)
+	void PlayHurtAnim();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStatsComponent* StatsComp;

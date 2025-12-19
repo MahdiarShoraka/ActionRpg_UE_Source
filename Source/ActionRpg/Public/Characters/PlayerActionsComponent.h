@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerActionsComponent.h"
 #include "Components/ActorComponent.h"
 #include "PlayerActionsComponent.generated.h"
 
@@ -10,6 +11,12 @@ DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
 	FOnSprintSignature,
 	UPlayerActionsComponent,
 	OnSprintDelegate,
+	float, Cost);
+
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnRollSignature,
+	UPlayerActionsComponent,
+	OnRollDelegate,
 	float, Cost);
 
 class UCharacterMovementComponent;
@@ -34,6 +41,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnSprintSignature OnSprintDelegate;
 	
+	UPROPERTY(BlueprintAssignable)
+	FOnRollSignature OnRollDelegate;
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -52,4 +62,12 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float WalkSpeed = 500.f;
+	
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* RollAnimMontage;
+	
+	UPROPERTY(EditAnywhere)
+	float RollCost = 5.0f;
+	
+	bool bIsRollActive = false;
 };

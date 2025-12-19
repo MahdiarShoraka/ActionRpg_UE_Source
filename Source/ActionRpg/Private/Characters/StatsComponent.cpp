@@ -4,6 +4,7 @@
 #include "Characters/StatsComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include  "Kismet/KismetSystemLibrary.h"
+#include "Interfaces/Fighter.h"
 
 UStatsComponent::UStatsComponent()
 {
@@ -12,10 +13,14 @@ UStatsComponent::UStatsComponent()
 }
 
 
-void UStatsComponent::ReduceHealth(float Damage)
+void UStatsComponent::ReduceHealth(float Damage, AActor* Opponent)
 {
 	if (Stats[EStat::Health] <= 0) return;
 
+	IFighter* FighterRef = GetOwner<IFighter>();
+	
+	if (!FighterRef->CanTakeDamage(Opponent)) return;
+	
 	Stats[EStat::Health] -= Damage;
 	Stats[EStat::Health] = UKismetMathLibrary::FClamp(
 		Stats[EStat::Health],

@@ -35,13 +35,14 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnUpdatedTargetSignature OnUpdatedTargetDelegate;
+	
+	void EndLockon();
+	
 protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable)
 	void StartLockon(float Radius = 750.f);
-	
-	void EndLockon();
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleLockon(float Radius = 750.f);

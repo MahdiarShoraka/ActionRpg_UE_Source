@@ -46,6 +46,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void HandleDeath();
+	
+	UFUNCTION()	// Timer needs UFUNCTION macro
+	void FinishDeathAnim();
 
 protected:
 	virtual void BeginPlay() override;

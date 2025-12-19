@@ -61,3 +61,24 @@ bool AMainCharacter::HasEnoughStamina(float Cost)
 	return StatsComp->Stats[EStat::Stamina] >= Cost;
 }
 
+void AMainCharacter::EndLockonWithActor(AActor* ActorRef)
+{
+	if (LockonComp->CurrentTargetActor != ActorRef) return;
+	LockonComp->EndLockon();
+}
+
+bool AMainCharacter::CanTakeDamage(AActor* Opponent)
+{
+	if (PlayerAnimInstance->bIsBlocking)
+	{
+		return BlockComp->Check(Opponent);
+	}
+	
+	return true;
+}
+
+void AMainCharacter::PlayHurtAnim()
+{
+	PlayAnimMontage(HurtAnimMontage);
+}
+

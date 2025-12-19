@@ -24,7 +24,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsInCombat = false;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CurrentDirection =  0.0f;
 
@@ -34,4 +34,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateDirection();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsBlocking = false;
 };

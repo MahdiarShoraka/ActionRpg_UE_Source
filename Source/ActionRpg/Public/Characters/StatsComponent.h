@@ -38,7 +38,7 @@ public:
 	TMap<TEnumAsByte<EStat>, float> Stats;	// Key : Enum of type EStat, Value: float
 
 	UFUNCTION(BlueprintCallable)
-	void ReduceHealth(float Damage);
+	void ReduceHealth(float Damage, AActor* Opponent);
 
 	UFUNCTION(BlueprintCallable)
 	void ReduceStamina(float Cost);

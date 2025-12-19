@@ -8,8 +8,8 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Combat/CombatComponent.h"
 #include "Characters/MainCharacter.h"
-#include "BrainComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Interfaces/MainPlayer.h"
 
 ABossCharacter::ABossCharacter()
 {
@@ -55,11 +55,29 @@ void ABossCharacter::HandlePlayerDeath()
 
 void ABossCharacter::HandleDeath()
 {
-	PlayAnimMontage(DeathAnim);
+	float AnimDuration = PlayAnimMontage(DeathAnim);
 	
 	ControllerRef->GetBrainComponent()->StopLogic("Defeated");
 	
 	FindComponentByClass<UCapsuleComponent>()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	FTimerHandle DestroyTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(
+		DestroyTimerHandle, 
+		this, 
+		&ABossCharacter::FinishDeathAnim, 
+		AnimDuration, 
+		false);
+	
+	IMainPlayer* PlayerRef = Cast<IMainPlayer>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if (!PlayerRef) return;
+	
+	PlayerRef->EndLockonWithActor(this);
+}
+
+void ABossCharacter::FinishDeathAnim()
+{
+	Destroy();
 }
 
 void ABossCharacter::BeginPlay()
