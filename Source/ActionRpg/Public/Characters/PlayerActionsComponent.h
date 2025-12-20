@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PlayerActionsComponent.h"
 #include "Components/ActorComponent.h"
 #include "PlayerActionsComponent.generated.h"
 
@@ -38,11 +37,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Walk();
 
+	UFUNCTION(BlueprintCallable)
+	void Roll();
+	
+	UFUNCTION()
+	void FinishRollAnim();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnSprintSignature OnSprintDelegate;
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnRollSignature OnRollDelegate;
+	
+	bool bIsRollActive = false;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -68,6 +75,4 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float RollCost = 5.0f;
-	
-	bool bIsRollActive = false;
 };
