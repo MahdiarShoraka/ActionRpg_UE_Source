@@ -41,4 +41,7 @@ private:
 	bool bDebugMode = false;
 
 	TArray<AActor*> TargetsToIgnore;
+	
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* HitParticleTemplate;
 };

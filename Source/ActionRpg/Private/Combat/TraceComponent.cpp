@@ -6,6 +6,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Interfaces/Fighter.h"
 #include "Engine/DamageEvents.h"
+#include "Kismet/GameplayStatics.h"
 
 UTraceComponent::UTraceComponent()
 {
@@ -37,7 +38,7 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 		FVector EndSocketLocation = SkeletalComp->GetSocketLocation(Socket.End);
 		FQuat ShapeRotation = SkeletalComp->GetSocketQuaternion(Socket.Rotation);
 
-		TArray<FHitResult> OutResults;
+		
 		double WeaponDistance = FVector::Distance(StartSocketLocation, EndSocketLocation);
 
 		FVector BoxHalfExtents = FVector(BoxCollisionLength, BoxCollisionLength, WeaponDistance);
@@ -46,6 +47,7 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 		FCollisionQueryParams IgnoreParams(FName(TEXT("Ignore Params")), false, GetOwner());
 	
+		TArray<FHitResult> OutResults;
 		bool bHasFoundTargets = GetWorld()->SweepMultiByChannel(
 			OutResults,
 			StartSocketLocation,
@@ -109,6 +111,7 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 		
 		TargetsToIgnore.AddUnique(TargetActor);
 		
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticleTemplate, Hit.ImpactPoint);
 	}
 }
 
