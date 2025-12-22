@@ -7,8 +7,7 @@ Developed as a course project to enhance proficiency in **C++ programming** and 
 ## Key Features
 - Enhanced Input System for player controls  
 - AI navigation and enemy Behavior Tree 
-- Combat system with advanced mechanics including stamina
-and More (will be updated...)
+- Combat system with advanced mechanics, including stamina, etc.
 
 ---
 
@@ -16,7 +15,6 @@ and More (will be updated...)
 - Unreal Engine 5  
 - C++
 - UE Blueprints
-(will be updated...)
 
 ---
 
